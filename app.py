@@ -184,7 +184,7 @@ if st.sidebar.button("🔄 Refresh Data", use_container_width=True):
     st.cache_data.clear()
     st.rerun()
 
-page = st.sidebar.radio("", [
+page = st.sidebar.radio("Navigate", [
     "🏠 Dashboard",
     "🔍 Analyze (BUY/SELL?)",
     "⚔️ Compare Stocks",
@@ -206,7 +206,7 @@ st.sidebar.caption("Built for Kalpesh")
 # ============================================================
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🎨 Theme")
-theme = st.sidebar.selectbox("", [
+theme = st.sidebar.selectbox("Theme", [
     "⬜ Clean White",
     "🌙 Dark Pro",
     "☁️ AWS Console",
