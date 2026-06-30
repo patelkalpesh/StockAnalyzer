@@ -1287,11 +1287,24 @@ elif page == "🤖 AI Advisor":
                 
                 with st.chat_message('assistant'):
                     with st.spinner("Thinking..."):
-                        response = client.models.generate_content(
-                            model='gemini-2.0-flash',
-                            contents=system_prompt + "\n\nUser question: " + prompt
-                        )
-                        reply = response.text
+                        try:
+                            response = client.models.generate_content(
+                                model='gemini-2.0-flash',
+                                contents=system_prompt + "\n\nUser question: " + prompt
+                            )
+                            reply = response.text
+                        except Exception as model_err:
+                            if '429' in str(model_err):
+                                try:
+                                    response = client.models.generate_content(
+                                        model='gemini-1.5-flash',
+                                        contents=system_prompt + "\n\nUser question: " + prompt
+                                    )
+                                    reply = response.text
+                                except:
+                                    reply = "⚠️ Rate limit hit. Your API key is new — wait 24 hours for quota to activate, or use Quick Answers mode (remove API key)."
+                            else:
+                                reply = f"Error: {model_err}"
                         st.markdown(reply)
                         st.session_state.messages.append({'role': 'assistant', 'content': reply})
         
