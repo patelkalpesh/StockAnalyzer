@@ -9,7 +9,9 @@
     "BPCL.NS": {"name": "BPCL", "shares": 6, "avg_cost": 288.90},
     "RPOWER.NS": {"name": "Reliance Power", "shares": 600, "avg_cost": 27.18},
     "TATAGOLD.NS": {"name": "Tata Gold ETF", "shares": 680, "avg_cost": 14.03},
-    "HDFCGOLD.NS": {"name": "HDFC Gold ETF", "shares": 6, "avg_cost": 128.14}
+    "TATASILV.NS": {"name": "Tata Silver ETF", "shares": 280, "avg_cost": 21.88},
+    "HDFCGOLD.NS": {"name": "HDFC Gold ETF", "shares": 6, "avg_cost": 128.14},
+    "MAFANG.NS": {"name": "Mirae Asset Nifty", "shares": 1, "avg_cost": 12.61}
   },
   "mutual_funds": {
     "Parag Parikh Flexi Cap Direct Growth": {"invested": 24999, "current": 24881},
