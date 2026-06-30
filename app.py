@@ -18,9 +18,9 @@ from engine import get_stock_data, score_stock, analyze_stock, compare_stocks
 # ============================================================
 # CACHING - fetch data once, reuse for 5 minutes
 # ============================================================
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=120)
 def fetch_all_portfolio_data(stocks_json):
-    """Fetch all stock data in one go, cached for 5 min"""
+    """Fetch all stock data in one go, cached for 2 min"""
     stocks = json.loads(stocks_json)
     results = {}
     for symbol in stocks:
@@ -32,12 +32,12 @@ def fetch_all_portfolio_data(stocks_json):
             pass
     return results
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=120)
 def fetch_stock_cached(symbol):
     """Cache individual stock lookups"""
     return fetch_stock_cached(symbol)
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=120)
 def analyze_stock_cached(symbol):
     """Cache analysis results"""
     return analyze_stock(symbol)
@@ -404,6 +404,7 @@ if theme_css:
 if page == "🏠 Dashboard":
     # Row 1: Title inline
     st.markdown("#### 🏠 Portfolio Dashboard")
+    st.caption(f"Last updated: {datetime.now().strftime('%d %b %Y, %I:%M:%S %p')} | Market closes 3:30 PM IST")
     
     portfolio = load_portfolio()
     stocks = portfolio.get('stocks', {})

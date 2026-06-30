@@ -6,7 +6,7 @@ import yfinance as yf
 
 
 def get_stock_data(symbol):
-    """Fetch complete stock data from Yahoo Finance"""
+    """Fetch complete stock data from Yahoo Finance with fresh prices"""
     if not symbol.endswith('.NS') and not symbol.endswith('.BO'):
         symbol = symbol.upper() + '.NS'
     
@@ -16,10 +16,20 @@ def get_stock_data(symbol):
     if not info or info.get('regularMarketPrice') is None:
         return None
     
+    # Get the most recent price - try multiple methods
+    cmp = info.get('currentPrice') or info.get('regularMarketPrice') or 0
+    
+    # If market is closed, get last close from history for most accurate
+    if cmp == 0:
+        hist = ticker.history(period='1d')
+        if not hist.empty:
+            cmp = hist['Close'].iloc[-1]
+    
     return {
         'symbol': symbol,
         'name': info.get('shortName', symbol),
-        'cmp': info.get('currentPrice') or info.get('regularMarketPrice', 0),
+        'cmp': cmp,
+        'previous_close': info.get('previousClose', 0),
         'market_cap': info.get('marketCap', 0),
         'pe_ratio': info.get('trailingPE'),
         'forward_pe': info.get('forwardPE'),
