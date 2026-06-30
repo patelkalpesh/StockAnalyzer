@@ -1458,55 +1458,132 @@ elif page == "➕ Manage Portfolio":
 # PAGE: MUTUAL FUNDS
 # ============================================================
 elif page == "📊 Mutual Funds":
-    st.markdown("# 📊 Mutual Funds")
-    st.markdown('<hr class="pro-divider">', unsafe_allow_html=True)
+    st.markdown("#### 📊 Mutual Funds")
     
     portfolio = load_portfolio()
     mf = portfolio.get('mutual_funds', {})
     
     if mf:
-        mf_data = []
-        total_invested = 0
-        total_current = 0
+        tab1, tab2 = st.tabs(["📊 Overview", "📈 NAV Tracker"])
         
-        for name, details in mf.items():
-            invested = details['invested']
-            current = details.get('current', invested)
-            pnl = current - invested
-            pnl_pct = (pnl / invested * 100) if invested > 0 else 0
-            total_invested += invested
-            total_current += current
+        with tab1:
+            mf_data = []
+            total_invested = 0
+            total_current = 0
             
-            mf_data.append({
-                'Fund': name,
-                'Invested': f"₹{invested:,}",
-                'Current': f"₹{current:,}",
-                'P&L (₹)': round(pnl, 0),
-                'P&L %': round(pnl_pct, 2),
-                'Status': '🟢 Profit' if pnl >= 0 else '🔴 Loss'
-            })
+            for name, details in mf.items():
+                invested = details['invested']
+                current = details.get('current', invested)
+                pnl = current - invested
+                pnl_pct = (pnl / invested * 100) if invested > 0 else 0
+                total_invested += invested
+                total_current += current
+                
+                mf_data.append({
+                    'Fund': name,
+                    'Invested': f"₹{invested:,}",
+                    'Current': f"₹{current:,}",
+                    'P&L (₹)': round(pnl, 0),
+                    'P&L %': round(pnl_pct, 2),
+                    'Status': '🟢 Profit' if pnl >= 0 else '🔴 Loss'
+                })
+            
+            # Summary
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("MF Invested", f"₹{total_invested:,}")
+            col2.metric("MF Current", f"₹{total_current:,}")
+            mf_pnl = total_current - total_invested
+            col3.metric("MF P&L", f"₹{mf_pnl:,}", f"{((mf_pnl)/total_invested)*100:+.2f}%")
+            col4.metric("XIRR", "10.10%")
+            
+            st.dataframe(pd.DataFrame(mf_data), use_container_width=True)
+            
+            # Pie chart
+            fig = px.pie(
+                pd.DataFrame([{'Fund': k, 'Value': v.get('current', v['invested'])} for k, v in mf.items()]),
+                values='Value', names='Fund', hole=0.45,
+                color_discrete_sequence=px.colors.qualitative.Pastel
+            )
+            fig.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)', font_color='#333', height=300
+            )
+            st.plotly_chart(fig, use_container_width=True)
         
-        # Summary
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("MF Invested", f"₹{total_invested:,}")
-        col2.metric("MF Current", f"₹{total_current:,}")
-        mf_pnl = total_current - total_invested
-        col3.metric("MF P&L", f"₹{mf_pnl:,}", f"{((mf_pnl)/total_invested)*100:+.2f}%")
-        col4.metric("XIRR", "10.10%")
-        
-        st.markdown('<hr class="pro-divider">', unsafe_allow_html=True)
-        st.dataframe(pd.DataFrame(mf_data), use_container_width=True)
-        
-        # Pie chart
-        fig = px.pie(
-            pd.DataFrame([{'Fund': k, 'Value': v.get('current', v['invested'])} for k, v in mf.items()]),
-            values='Value', names='Fund', hole=0.45,
-            color_discrete_sequence=px.colors.qualitative.Pastel
-        )
-        fig.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)', font_color='white', height=380
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        with tab2:
+            st.markdown("#### 📈 NAV History & Daily Tracking")
+            st.markdown("Track how your MF investments change day by day.")
+            
+            import yfinance as yf
+            
+            # MF Yahoo Finance symbols (approximate)
+            mf_symbols = {
+                'Parag Parikh Flexi Cap Direct Growth': '0P0001BAL7.BO',
+                'HDFC Mid Cap Fund Direct Growth': '0P0000XVYH.BO',
+                'Bandhan Small Cap Fund Direct Growth': '0P0001B9V4.BO',
+            }
+            
+            period = st.selectbox("Period", ["1mo", "3mo", "6mo", "1y"], index=1)
+            
+            for fund_name, symbol in mf_symbols.items():
+                try:
+                    ticker = yf.Ticker(symbol)
+                    hist = ticker.history(period=period)
+                    
+                    if not hist.empty:
+                        st.markdown(f"**{fund_name}**")
+                        
+                        # NAV chart
+                        fig = go.Figure()
+                        fig.add_trace(go.Scatter(
+                            x=hist.index, y=hist['Close'],
+                            mode='lines', name='NAV',
+                            line=dict(color='#2563eb', width=2),
+                            fill='tozeroy', fillcolor='rgba(37,99,235,0.1)'
+                        ))
+                        fig.update_layout(
+                            height=200, margin=dict(l=0,r=0,t=10,b=20),
+                            paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+                            yaxis_title="NAV (₹)", xaxis_title="",
+                            font_color='#333'
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+                        
+                        # Stats
+                        current_nav = hist['Close'].iloc[-1]
+                        start_nav = hist['Close'].iloc[0]
+                        change = current_nav - start_nav
+                        change_pct = (change / start_nav) * 100
+                        high_nav = hist['Close'].max()
+                        low_nav = hist['Close'].min()
+                        drawdown = ((current_nav - high_nav) / high_nav) * 100
+                        
+                        c1, c2, c3, c4, c5 = st.columns(5)
+                        c1.metric("Current NAV", f"₹{current_nav:.2f}")
+                        c2.metric("Change", f"₹{change:.2f}", f"{change_pct:+.1f}%")
+                        c3.metric("High", f"₹{high_nav:.2f}")
+                        c4.metric("Low", f"₹{low_nav:.2f}")
+                        c5.metric("From High", f"{drawdown:.1f}%")
+                        
+                        st.markdown("---")
+                except Exception as e:
+                    st.info(f"{fund_name}: NAV data not available on Yahoo Finance")
+            
+            # Daily value tracker
+            st.markdown("#### 💰 Daily Portfolio Value")
+            st.markdown("Your MF value changes over time:")
+            
+            # Calculate total invested per fund and show growth
+            mf_daily = []
+            total_mf_invested = sum(m['invested'] for m in mf.values())
+            total_mf_current = sum(m.get('current', m['invested']) for m in mf.values())
+            daily_change = total_mf_current - total_mf_invested
+            
+            col1, col2, col3 = st.columns(3)
+            col1.metric("Total MF Invested", f"₹{total_mf_invested:,}")
+            col2.metric("Today's Value", f"₹{total_mf_current:,}")
+            col3.metric("Total Growth", f"₹{daily_change:,}", f"{(daily_change/total_mf_invested)*100:+.2f}%")
+            
+            st.info("💡 Tip: MF NAVs update at end of day. Check after 9 PM for latest values.")
     else:
         st.info("No mutual fund data. Update portfolio.json to add.")
 
