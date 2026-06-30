@@ -55,6 +55,36 @@ st.set_page_config(
 )
 
 # ============================================================
+# PASSWORD PROTECTION
+# ============================================================
+def check_password():
+    """Simple password gate"""
+    if 'authenticated' not in st.session_state:
+        st.session_state.authenticated = False
+    
+    if st.session_state.authenticated:
+        return True
+    
+    st.markdown("<div style='max-width:400px; margin:80px auto; text-align:center;'>", unsafe_allow_html=True)
+    st.markdown("## 📈 Stock Analyzer")
+    st.markdown("Enter password to access your portfolio")
+    
+    password = st.text_input("Password", type="password", key="login_password")
+    
+    if st.button("Login", type="primary"):
+        if password == st.secrets.get("password", "kalpesh2026"):
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Wrong password")
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    return False
+
+if not check_password():
+    st.stop()
+
+# ============================================================
 # CUSTOM CSS FOR PROFESSIONAL LOOK
 # ============================================================
 st.markdown("""
