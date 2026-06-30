@@ -186,13 +186,13 @@ if st.sidebar.button("🔄 Refresh Data", use_container_width=True):
 
 page = st.sidebar.radio("Navigate", [
     "🏠 Dashboard",
+    "📊 Mutual Funds",
     "🔍 Analyze (BUY/SELL?)",
     "⚔️ Compare Stocks",
     "🛡️ Risk Engine",
     "💡 Opportunities",
     "🤖 AI Advisor",
     "➕ Manage Portfolio",
-    "📊 Mutual Funds",
     "🔔 Alerts & Export",
     "📈 Watchlist",
 ])
