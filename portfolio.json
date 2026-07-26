@@ -1,23 +1,22 @@
 {
   "stocks": {
     "HDFCBANK.NS": {"name": "HDFC Bank", "shares": 30, "avg_cost": 753.88},
+    "BANKBARODA.NS": {"name": "Bank of Baroda", "shares": 90, "avg_cost": 251.06},
     "IRFC.NS": {"name": "IRFC", "shares": 200, "avg_cost": 98.71},
-    "SUZLON.NS": {"name": "Suzlon Energy", "shares": 80, "avg_cost": 52.10},
-    "ADANIPOWER.NS": {"name": "Adani Power", "shares": 15, "avg_cost": 213.14},
-    "BANKBARODA.NS": {"name": "Bank of Baroda", "shares": 29, "avg_cost": 260.94},
-    "KALYANKJIL.NS": {"name": "Kalyan Jewellers", "shares": 6, "avg_cost": 360.87},
+    "RPOWER.NS": {"name": "Reliance Power", "shares": 650, "avg_cost": 27.08},
+    "TATAGOLD.NS": {"name": "Tata Gold ETF", "shares": 850, "avg_cost": 13.99},
+    "TATASILV.NS": {"name": "Tata Silver ETF", "shares": 350, "avg_cost": 21.73},
+    "ADANIPOWER.NS": {"name": "Adani Power", "shares": 30, "avg_cost": 213.30},
+    "SUZLON.NS": {"name": "Suzlon Energy", "shares": 100, "avg_cost": 52.12},
+    "MAFANG.NS": {"name": "Mirae Asset Nifty", "shares": 200, "avg_cost": 12.58},
     "BPCL.NS": {"name": "BPCL", "shares": 6, "avg_cost": 288.90},
-    "RPOWER.NS": {"name": "Reliance Power", "shares": 600, "avg_cost": 27.18},
-    "TATAGOLD.NS": {"name": "Tata Gold ETF", "shares": 680, "avg_cost": 14.03},
-    "TATASILV.NS": {"name": "Tata Silver ETF", "shares": 280, "avg_cost": 21.88},
-    "HDFCGOLD.NS": {"name": "HDFC Gold ETF", "shares": 6, "avg_cost": 128.14},
-    "MAFANG.NS": {"name": "Mirae Asset Nifty", "shares": 1, "avg_cost": 12.61}
+    "HDFCGOLD.NS": {"name": "HDFC Gold ETF", "shares": 6, "avg_cost": 128.14}
   },
   "mutual_funds": {
-    "Parag Parikh Flexi Cap Direct Growth": {"invested": 24999, "current": 24881},
-    "HDFC Mid Cap Fund Direct Growth": {"invested": 19999, "current": 20371},
-    "Bandhan Small Cap Fund Direct Growth": {"invested": 15999, "current": 16292},
-    "Quant Multi Asset Allocation Direct Growth": {"invested": 12999, "current": 13065},
-    "JioBlackRock Flexi Cap Fund Direct Growth": {"invested": 11999, "current": 12121}
+    "Parag Parikh Flexi Cap Direct Growth": {"invested": 37998, "current": 37866, "xirr": -2.96},
+    "HDFC Mid Cap Fund Direct Growth": {"invested": 32998, "current": 33534, "xirr": 15.08},
+    "Bandhan Small Cap Fund Direct Growth": {"invested": 27999, "current": 28534, "xirr": 18.63},
+    "Quant Multi Asset Allocation Fund Direct Growth": {"invested": 25999, "current": 26228, "xirr": 10.98},
+    "JioBlackRock Flexi Cap Fund Direct Growth": {"invested": 23999, "current": 23995, "xirr": -0.16}
   }
 }
