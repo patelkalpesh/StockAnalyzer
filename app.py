@@ -35,7 +35,7 @@ def fetch_all_portfolio_data(stocks_json):
 @st.cache_data(ttl=120)
 def fetch_stock_cached(symbol):
     """Cache individual stock lookups"""
-    return fetch_stock_cached(symbol)
+    return get_stock_data(symbol)
 
 @st.cache_data(ttl=120)
 def analyze_stock_cached(symbol):
@@ -72,7 +72,12 @@ def check_password():
     password = st.text_input("Password", type="password", key="login_password")
     
     if st.button("Login", type="primary"):
-        if password == st.secrets.get("password", "kalpesh2026"):
+        try:
+            correct_pw = st.secrets["password"]
+        except:
+            correct_pw = "kalpesh2026"
+        
+        if password == correct_pw:
             st.session_state.authenticated = True
             st.rerun()
         else:
