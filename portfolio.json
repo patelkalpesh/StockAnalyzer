@@ -13,10 +13,10 @@
     "HDFCGOLD.NS": {"name": "HDFC Gold ETF", "shares": 6, "avg_cost": 128.14}
   },
   "mutual_funds": {
-    "Parag Parikh Flexi Cap Direct Growth": {"invested": 37998, "current": 37866, "xirr": -2.96},
-    "HDFC Mid Cap Fund Direct Growth": {"invested": 32998, "current": 33534, "xirr": 15.08},
-    "Bandhan Small Cap Fund Direct Growth": {"invested": 27999, "current": 28534, "xirr": 18.63},
-    "Quant Multi Asset Allocation Fund Direct Growth": {"invested": 25999, "current": 26228, "xirr": 10.98},
-    "JioBlackRock Flexi Cap Fund Direct Growth": {"invested": 23999, "current": 23995, "xirr": -0.16}
+    "Parag Parikh Flexi Cap Direct Growth": {"invested": 37998, "current": 37866},
+    "HDFC Mid Cap Fund Direct Growth": {"invested": 32998, "current": 33534},
+    "Bandhan Small Cap Fund Direct Growth": {"invested": 27999, "current": 28534},
+    "Quant Multi Asset Allocation Fund Direct Growth": {"invested": 25999, "current": 26228},
+    "JioBlackRock Flexi Cap Fund Direct Growth": {"invested": 23999, "current": 23995}
   }
 }
