@@ -595,21 +595,28 @@ if page == "🏠 Dashboard":
         # Row 3: Holdings table immediately
         if data_rows:
             df = pd.DataFrame(data_rows)
+            # Reorder: most important columns first (Stock, P&L%, P&L, Rating, then details)
+            df = df[['Stock', 'P&L %', 'P&L', 'Rating', 'CMP', 'Avg', 'Shares', 'Invested', 'Current', 'Score']]
             
             st.dataframe(
                 df.style.format({
                     'Avg': '{:.2f}',
                     'CMP': '{:.2f}',
-                    'Invested': '{:.2f}',
-                    'Current': '{:.2f}',
-                    'P&L': '{:.2f}',
-                    'P&L %': '{:.2f}',
+                    'Invested': '{:.0f}',
+                    'Current': '{:.0f}',
+                    'P&L': '{:.0f}',
+                    'P&L %': '{:.1f}',
                 }).map(
                     lambda x: 'color: #16a34a' if isinstance(x, (int, float)) and x > 0 else ('color: #dc2626' if isinstance(x, (int, float)) and x < 0 else ''),
                     subset=['P&L', 'P&L %']
                 ),
                 use_container_width=True,
-                height=min(400, 35 + len(data_rows) * 35)
+                height=min(450, 38 + len(data_rows) * 36),
+                column_config={
+                    "Stock": st.column_config.TextColumn("Stock", pinned=True, width="medium"),
+                    "P&L %": st.column_config.NumberColumn("P&L %", format="%.1f%%"),
+                },
+                hide_index=True
             )
             
             # Row 4: Charts side by side
