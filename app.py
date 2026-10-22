@@ -1087,27 +1087,25 @@ elif page == "💡 Opportunities":
         if st.button("🎯 Get Recommendation", type="primary"):
             st.markdown(f"### Recommended Allocation for ₹{amount:,}")
             
-            # Simple allocation logic
-            mf_alloc = int(amount * 0.5)
-            stock_alloc = int(amount * 0.35)
-            gold_alloc = int(amount * 0.15)
+            # Allocation logic - buy quality during dip
+            mf_alloc = int(amount * 0.55)
+            stock_alloc = int(amount * 0.45)
             
-            # Specific picks
             st.markdown(f"""
             | Where | Amount | Why |
             |-------|--------|-----|
-            | **Parag Parikh Flexi Cap** | ₹{int(mf_alloc * 0.4):,} | Best diversified fund, international exposure |
-            | **HDFC Mid Cap Fund** | ₹{int(mf_alloc * 0.35):,} | Strong mid-cap exposure |
-            | **Bandhan Small Cap** | ₹{int(mf_alloc * 0.25):,} | High growth potential |
-            | **HDFC Bank** | ₹{int(stock_alloc * 0.5):,} | Strong Buy, 30% upside to target |
-            | **Kalyan Jewellers** | ₹{int(stock_alloc * 0.5):,} | 75% upside, best growth story |
-            | **TATAGOLD ETF** | ₹{gold_alloc:,} | Portfolio hedge, gold underweight |
+            | **HDFC Bank** (stock) | ₹{int(stock_alloc * 0.55):,} | 47% upside to target, best quality bank, oversold |
+            | **Parag Parikh Flexi Cap** (MF) | ₹{int(mf_alloc * 0.35):,} | Only positive fund, international exposure |
+            | **HDFC Mid Cap Fund** (MF) | ₹{int(mf_alloc * 0.35):,} | Down -23%, big bounce on recovery |
+            | **Bandhan Small Cap** (MF) | ₹{int(mf_alloc * 0.30):,} | Small caps recover hardest |
+            | **Bank of Baroda** (stock) | ₹{int(stock_alloc * 0.45):,} | Solid PSU, near break-even, strengthen biggest holding |
             """)
             
             st.markdown(f"""
-            **Split:** MF ₹{mf_alloc:,} (50%) | Stocks ₹{stock_alloc:,} (35%) | Gold ₹{gold_alloc:,} (15%)
+            **Split:** Mutual Funds ₹{mf_alloc:,} (55%) | Quality Stocks ₹{stock_alloc:,} (45%)
             """)
-            st.info("💡 This is based on your current allocation gaps and stock fundamentals.")
+            st.warning("🛑 Do NOT buy: Reliance Power, IRFC, new ETFs (over-diversified), PSU/power stocks (overweight)")
+            st.info("💡 Market is down ~5% (corrected). Buy quality equity on the dip. Keep gold/silver as-is (already enough).")
 
 
 # ============================================================
@@ -1153,12 +1151,12 @@ elif page == "🤖 AI Advisor":
                 
                 | Investment | Amount | Reason |
                 |-----------|--------|--------|
-                | Parag Parikh Flexi Cap MF | ₹2,000 | Best risk-adjusted returns, international diversification |
-                | HDFC Bank (Stock) | ₹1,500 | 30% upside to analyst target, India's best bank |
-                | Kalyan Jewellers (Stock) | ₹1,000 | 75% upside, revenue growing 67% |
-                | TATAGOLD ETF | ₹500 | Gold is underweight in your portfolio |
+                | HDFC Bank (Stock) | ₹2,000 | 47% upside to target, best bank, oversold in dip |
+                | Parag Parikh Flexi Cap MF | ₹1,500 | Only positive fund, international diversification |
+                | HDFC Mid Cap MF | ₹1,000 | Down -23%, bounces hard on recovery |
+                | Bank of Baroda (Stock) | ₹500 | Solid PSU, near break-even |
                 
-                **Reasoning:** Your MFs are well-chosen, increase allocation there. Among stocks, HDFC Bank and Kalyan Jewellers have the best risk-reward. Gold provides downside protection.
+                **Reasoning:** Market is down ~5% (corrected). Buy quality equity on the dip. HDFC Bank is the standout. Keep gold/silver as-is (already enough). Avoid Reliance Power, IRFC, and new ETFs.
                 """)
             
             elif quick_q == "Which holding is most risky?":
@@ -1220,15 +1218,17 @@ elif page == "🤖 AI Advisor":
             
             elif quick_q == "What should I sell?":
                 st.error("""
-                **Sell these immediately:**
+                **Sell/Exit these:**
                 
                 | Stock | Reason | Capital Freed |
                 |-------|--------|---------------|
-                | Reliance Power | Loss-making, -64% in 1 year, no future | ₹14,484 |
-                | HDFCGOLD | ₹722 — pointlessly small | ₹722 |
-                | TATSILV | Over-allocated to commodities | ₹5,919 |
+                | Reliance Power | Loss-making, -34%, no recovery thesis | ~₹12,600 |
+                | IRFC | Overhyped PSU, -18%, slow growth | consider trimming |
+                | Tiny positions (JIO Financial, small ETFs) | Too small to matter, consolidate | varies |
                 
-                **Total freed: ~₹21,000** → Redirect to Kalyan Jewellers + HDFC Bank
+                **Redirect freed cash → HDFC Bank + quality MFs (Parag Parikh, HDFC Mid Cap)**
+                
+                You're also PSU-heavy (5 govt stocks) — stop adding more.
                 """)
             
             elif quick_q == "What is my portfolio strategy?":
