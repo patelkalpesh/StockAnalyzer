@@ -172,21 +172,40 @@ st.markdown("""
     
     /* MOBILE RESPONSIVE */
     @media (max-width: 768px) {
-        .main .block-container { padding: 0.3rem 0.5rem !important; }
-        [data-testid="stSidebar"] { min-width: 70% !important; max-width: 70% !important; }
-        [data-testid="stSidebar"] .stRadio label { font-size: 0.8rem !important; padding: 4px !important; }
-        [data-testid="stSidebar"] h2 { font-size: 0.9rem !important; }
-        [data-testid="stMetric"] { padding: 4px 6px !important; }
-        [data-testid="stMetricLabel"] { font-size: 0.5rem !important; }
-        [data-testid="stMetricValue"] { font-size: 0.8rem !important; }
-        [data-testid="stMetricDelta"] { font-size: 0.55rem !important; }
-        h4 { font-size: 0.75rem !important; }
-        [data-testid="column"] { padding: 0 0.1rem !important; }
-        div[data-testid="stHorizontalBlock"] { gap: 0.1rem !important; }
-        .stDataFrame { font-size: 0.65rem !important; overflow-x: auto !important; }
-        .stButton > button { font-size: 0.7rem !important; padding: 4px 8px !important; width: 100% !important; }
-        .stPlotlyChart { height: 200px !important; }
-        .stTabs [data-baseweb="tab"] { padding: 3px 6px !important; font-size: 0.65rem !important; }
+        .main .block-container { padding: 0.5rem 0.6rem !important; }
+
+        /* Sidebar overlay, not pushing content */
+        [data-testid="stSidebar"] { min-width: 75% !important; max-width: 75% !important; }
+        [data-testid="stSidebar"] .stRadio label { font-size: 0.9rem !important; padding: 6px !important; }
+        [data-testid="stSidebar"] h2 { font-size: 1rem !important; }
+
+        /* KEY FIX: force horizontal column blocks to WRAP on mobile */
+        div[data-testid="stHorizontalBlock"] {
+            flex-wrap: wrap !important;
+            gap: 0.4rem !important;
+        }
+        /* Each column takes ~50% width = 2 per row, instead of 7 squished */
+        div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+            min-width: calc(50% - 0.4rem) !important;
+            flex: 1 1 calc(50% - 0.4rem) !important;
+            width: calc(50% - 0.4rem) !important;
+        }
+
+        /* Metric cards readable */
+        [data-testid="stMetric"] { padding: 8px 10px !important; }
+        [data-testid="stMetricLabel"] { font-size: 0.7rem !important; }
+        [data-testid="stMetricValue"] { font-size: 1rem !important; }
+        [data-testid="stMetricDelta"] { font-size: 0.7rem !important; }
+
+        h1 { font-size: 1.2rem !important; }
+        h4 { font-size: 0.95rem !important; }
+
+        /* Tables scroll horizontally */
+        .stDataFrame { font-size: 0.75rem !important; overflow-x: auto !important; }
+
+        .stButton > button { font-size: 0.85rem !important; padding: 6px 10px !important; width: 100% !important; }
+        .stPlotlyChart { height: 260px !important; }
+        .stTabs [data-baseweb="tab"] { padding: 5px 8px !important; font-size: 0.8rem !important; }
     }
 </style>
 """, unsafe_allow_html=True)
