@@ -72,7 +72,7 @@ st.set_page_config(
     page_title="Kalpesh Stock Analyzer",
     page_icon="📈",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # ============================================================
@@ -130,12 +130,13 @@ st.markdown("""
     [data-testid="stStatusWidget"] { display: none !important; }
     
     /* Sidebar */
-    [data-testid="stSidebar"] { min-width: 180px !important; max-width: 180px !important; display: block !important; visibility: visible !important; transform: none !important; }
     [data-testid="stSidebar"] > div:first-child { padding: 0.3rem 0.6rem; }
-    [data-testid="stSidebar"][aria-expanded="false"] { display: block !important; min-width: 180px !important; max-width: 180px !important; margin-left: 0 !important; transform: none !important; }
-    [data-testid="collapsedControl"] { display: none !important; }
     [data-testid="stSidebar"] .stRadio > div { gap: 0; }
     [data-testid="stSidebar"] .stRadio label { font-size: 0.8rem; padding: 3px 2px; margin: 0; }
+    /* Desktop only: fixed sidebar width */
+    @media (min-width: 769px) {
+        [data-testid="stSidebar"] { min-width: 180px !important; max-width: 180px !important; }
+    }
     [data-testid="stSidebar"] h2 { font-size: 0.95rem; margin: 0; }
     [data-testid="stSidebar"] hr { margin: 3px 0; }
     [data-testid="stSidebar"] .stCaption { font-size: 0.6rem; margin: 0; }
@@ -172,7 +173,9 @@ st.markdown("""
     /* MOBILE RESPONSIVE */
     @media (max-width: 768px) {
         .main .block-container { padding: 0.3rem 0.5rem !important; }
-        [data-testid="stSidebar"] { min-width: 0 !important; max-width: 100% !important; }
+        [data-testid="stSidebar"] { min-width: 70% !important; max-width: 70% !important; }
+        [data-testid="stSidebar"] .stRadio label { font-size: 0.8rem !important; padding: 4px !important; }
+        [data-testid="stSidebar"] h2 { font-size: 0.9rem !important; }
         [data-testid="stMetric"] { padding: 4px 6px !important; }
         [data-testid="stMetricLabel"] { font-size: 0.5rem !important; }
         [data-testid="stMetricValue"] { font-size: 0.8rem !important; }
