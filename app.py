@@ -551,6 +551,23 @@ if page == "🏠 Dashboard":
                         'Score': scoring['score'],
                         'Rating': scoring['recommendation'],
                     })
+                else:
+                    # Price fetch failed - show with avg cost as fallback (no live price)
+                    invested = pos['avg_cost'] * pos['shares']
+                    total_invested += invested
+                    total_current += invested
+                    data_rows.append({
+                        'Stock': pos['name'] + ' *',
+                        'Shares': pos['shares'],
+                        'Avg': round(pos['avg_cost'], 2),
+                        'CMP': round(pos['avg_cost'], 2),
+                        'Invested': round(invested, 2),
+                        'Current': round(invested, 2),
+                        'P&L': 0,
+                        'P&L %': 0,
+                        'Score': 0,
+                        'Rating': 'NO DATA',
+                    })
             
             # MF totals
             mf_invested = sum(m['invested'] for m in mf.values())

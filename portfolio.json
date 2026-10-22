@@ -60,11 +60,6 @@
       "shares": 1050,
       "avg_cost": 14.02
     },
-    "TATASILV.NS": {
-      "name": "Tata Silver ETF",
-      "shares": 650,
-      "avg_cost": 21.48
-    },
     "MAFANG.NS": {
       "name": "Mirae Asset NYSE FANG+",
       "shares": 25,
@@ -84,6 +79,11 @@
       "name": "Defence ETF",
       "shares": 50,
       "avg_cost": 76.32
+    },
+    "TATSILV.NS": {
+      "name": "Tata Silver ETF",
+      "shares": 650,
+      "avg_cost": 21.48
     }
   },
   "mutual_funds": {
