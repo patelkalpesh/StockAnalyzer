@@ -1,28 +1,111 @@
 {
   "stocks": {
-    "BANKBARODA.NS": {"name": "Bank of Baroda", "shares": 183, "avg_cost": 242.24},
-    "BPCL.NS": {"name": "BPCL", "shares": 19, "avg_cost": 291.72},
-    "HDFCBANK.NS": {"name": "HDFC Bank", "shares": 58, "avg_cost": 731.27},
-    "SUZLON.NS": {"name": "Suzlon Energy", "shares": 160, "avg_cost": 49.73},
-    "IRFC.NS": {"name": "IRFC", "shares": 255, "avg_cost": 94.54},
-    "IOC.NS": {"name": "Indian Oil Corp", "shares": 100, "avg_cost": 133.52},
-    "COALINDIA.NS": {"name": "Coal India", "shares": 20, "avg_cost": 410.54},
-    "RPOWER.NS": {"name": "Reliance Power", "shares": 730, "avg_cost": 26.33},
-    "JIOFIN.NS": {"name": "JIO Financial Serv", "shares": 8, "avg_cost": 214.77},
-    "ADANIPOWER.NS": {"name": "Adani Power", "shares": 80, "avg_cost": 202.20},
-    "HDFCGOLD.NS": {"name": "HDFC Gold ETF", "shares": 10, "avg_cost": 125.19},
-    "TATAGOLD.NS": {"name": "Tata Gold ETF", "shares": 1050, "avg_cost": 14.02},
-    "TATASILV.NS": {"name": "Tata Silver ETF", "shares": 650, "avg_cost": 21.48},
-    "MAFANG.NS": {"name": "Mirae Asset NYSE FANG+", "shares": 25, "avg_cost": 257.76},
-    "MASPTOP50.NS": {"name": "Mirae Asset S&P 500 Top 50", "shares": 40, "avg_cost": 103.75},
-    "MANIFTY.NS": {"name": "Mirae Asset Nifty", "shares": 433, "avg_cost": 12.51},
-    "DEFENCE.NS": {"name": "Defence ETF", "shares": 50, "avg_cost": 76.32}
+    "BANKBARODA.NS": {
+      "name": "Bank of Baroda",
+      "shares": 183,
+      "avg_cost": 242.24
+    },
+    "BPCL.NS": {
+      "name": "BPCL",
+      "shares": 19,
+      "avg_cost": 291.72
+    },
+    "HDFCBANK.NS": {
+      "name": "HDFC Bank",
+      "shares": 58,
+      "avg_cost": 731.27
+    },
+    "SUZLON.NS": {
+      "name": "Suzlon Energy",
+      "shares": 160,
+      "avg_cost": 49.73
+    },
+    "IRFC.NS": {
+      "name": "IRFC",
+      "shares": 255,
+      "avg_cost": 94.54
+    },
+    "IOC.NS": {
+      "name": "Indian Oil Corp",
+      "shares": 100,
+      "avg_cost": 133.52
+    },
+    "COALINDIA.NS": {
+      "name": "Coal India",
+      "shares": 20,
+      "avg_cost": 410.54
+    },
+    "RPOWER.NS": {
+      "name": "Reliance Power",
+      "shares": 730,
+      "avg_cost": 26.33
+    },
+    "JIOFIN.NS": {
+      "name": "JIO Financial Serv",
+      "shares": 8,
+      "avg_cost": 214.77
+    },
+    "ADANIPOWER.NS": {
+      "name": "Adani Power",
+      "shares": 80,
+      "avg_cost": 202.2
+    },
+    "HDFCGOLD.NS": {
+      "name": "HDFC Gold ETF",
+      "shares": 10,
+      "avg_cost": 125.19
+    },
+    "TATAGOLD.NS": {
+      "name": "Tata Gold ETF",
+      "shares": 1050,
+      "avg_cost": 14.02
+    },
+    "TATASILV.NS": {
+      "name": "Tata Silver ETF",
+      "shares": 650,
+      "avg_cost": 21.48
+    },
+    "MAFANG.NS": {
+      "name": "Mirae Asset NYSE FANG+",
+      "shares": 25,
+      "avg_cost": 257.76
+    },
+    "MASPTOP50.NS": {
+      "name": "Mirae Asset S&P 500 Top 50",
+      "shares": 40,
+      "avg_cost": 103.75
+    },
+    "MANIFTY.NS": {
+      "name": "Mirae Asset Nifty",
+      "shares": 433,
+      "avg_cost": 12.51
+    },
+    "DEFENCE.NS": {
+      "name": "Defence ETF",
+      "shares": 50,
+      "avg_cost": 76.32
+    }
   },
   "mutual_funds": {
-    "Parag Parikh Flexi Cap Direct Growth": {"invested": 37998, "current": 37866},
-    "HDFC Mid Cap Fund Direct Growth": {"invested": 32998, "current": 33534},
-    "Bandhan Small Cap Fund Direct Growth": {"invested": 27999, "current": 28534},
-    "Quant Multi Asset Allocation Fund Direct Growth": {"invested": 25999, "current": 26228},
-    "JioBlackRock Flexi Cap Fund Direct Growth": {"invested": 23999, "current": 23995}
+    "Parag Parikh Flexi Cap Direct Growth": {
+      "invested": 90999,
+      "current": 91094
+    },
+    "HDFC Mid Cap Fund Direct Growth": {
+      "invested": 114000,
+      "current": 108114
+    },
+    "Bandhan Small Cap Fund Direct Growth": {
+      "invested": 107000,
+      "current": 104730
+    },
+    "Quant Multi Asset Allocation Fund Direct Growth": {
+      "invested": 78000,
+      "current": 75984
+    },
+    "JioBlackRock Flexi Cap Fund Direct Growth": {
+      "invested": 67000,
+      "current": 63623
+    }
   }
 }
