@@ -133,6 +133,38 @@ st.markdown("""
     [data-testid="stSidebar"] > div:first-child { padding: 0.3rem 0.6rem; }
     [data-testid="stSidebar"] .stRadio > div { gap: 0; }
     [data-testid="stSidebar"] .stRadio label { font-size: 0.8rem; padding: 3px 2px; margin: 0; }
+    
+    /* Make the sidebar-open (hamburger) button BIG and VISIBLE */
+    [data-testid="collapsedControl"] {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: #2563eb !important;
+        border-radius: 8px !important;
+        padding: 6px !important;
+        top: 8px !important;
+        left: 8px !important;
+        z-index: 999999 !important;
+    }
+    [data-testid="collapsedControl"] svg {
+        color: white !important;
+        fill: white !important;
+        width: 28px !important;
+        height: 28px !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] {
+        display: block !important;
+        visibility: visible !important;
+        background: #2563eb !important;
+        border-radius: 8px !important;
+        z-index: 999999 !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] svg {
+        color: white !important;
+        width: 28px !important;
+        height: 28px !important;
+    }
+    
     /* Desktop only: fixed sidebar width */
     @media (min-width: 769px) {
         [data-testid="stSidebar"] { min-width: 180px !important; max-width: 180px !important; }
