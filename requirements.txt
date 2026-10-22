@@ -4,3 +4,4 @@ pandas
 plotly
 openpyxl
 google-genai
+streamlit-autorefresh

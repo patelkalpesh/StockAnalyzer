@@ -9,11 +9,32 @@ import plotly.graph_objects as go
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 # Add current directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from engine import get_stock_data, score_stock, analyze_stock, compare_stocks
+
+# ============================================================
+# MARKET STATUS HELPER
+# ============================================================
+def get_market_status():
+    """Returns (is_open, status_text, color) for NSE market hours"""
+    ist = timezone(timedelta(hours=5, minutes=30))
+    now = datetime.now(ist)
+    weekday = now.weekday()  # 0=Mon, 6=Sun
+    hour_min = now.hour * 60 + now.minute
+    market_open = 9 * 60 + 15   # 9:15 AM
+    market_close = 15 * 60 + 30  # 3:30 PM
+    
+    if weekday >= 5:  # Weekend
+        return (False, "🔴 CLOSED (Weekend)", "#dc2626")
+    elif market_open <= hour_min < market_close:
+        return (True, "🟢 LIVE (Market Open)", "#16a34a")
+    elif hour_min < market_open:
+        return (False, "🟡 Pre-Market (opens 9:15 AM)", "#f59e0b")
+    else:
+        return (False, "🔵 CLOSED (last close price)", "#2563eb")
 
 # ============================================================
 # CACHING - fetch data once, reuse for 5 minutes
@@ -199,12 +220,27 @@ def get_score_emoji(rec):
 # ============================================================
 st.sidebar.markdown("## 📈 Stock Analyzer")
 st.sidebar.markdown(f"*{datetime.now().strftime('%d %b %Y, %I:%M %p')}*")
+
+# Live market status badge in sidebar
+_is_open, _status, _color = get_market_status()
+st.sidebar.markdown(f"<div style='background:{_color}; color:white; padding:4px 10px; border-radius:8px; text-align:center; font-size:0.75rem; font-weight:600; margin:4px 0;'>{_status}</div>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
 # Manual Refresh Button
 if st.sidebar.button("🔄 Refresh Data", use_container_width=True):
     st.cache_data.clear()
     st.rerun()
+
+# Auto-refresh toggle
+auto_refresh = st.sidebar.checkbox("⚡ Auto-refresh (2 min)", value=False)
+if auto_refresh:
+    try:
+        from streamlit_autorefresh import st_autorefresh
+        st_autorefresh(interval=120000, key="auto_refresh")
+    except ImportError:
+        # Fallback: use meta refresh
+        st.sidebar.caption("Refreshing every 2 min...")
+        st.markdown("<meta http-equiv='refresh' content='120'>", unsafe_allow_html=True)
 
 page = st.sidebar.radio("Navigate", [
     "🏠 Dashboard",
@@ -410,7 +446,9 @@ if theme_css:
 if page == "🏠 Dashboard":
     # Row 1: Title inline
     st.markdown("#### 🏠 Portfolio Dashboard")
-    st.caption(f"Last updated: {datetime.now().strftime('%d %b %Y, %I:%M:%S %p')} | Market closes 3:30 PM IST")
+    is_open, status_text, status_color = get_market_status()
+    ist = timezone(timedelta(hours=5, minutes=30))
+    st.markdown(f"<span style='background:{status_color}; color:white; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:600;'>{status_text}</span> &nbsp; <span style='color:#888; font-size:0.75rem;'>Last updated: {datetime.now(ist).strftime('%d %b %Y, %I:%M:%S %p')} IST</span>", unsafe_allow_html=True)
     
     portfolio = load_portfolio()
     stocks = portfolio.get('stocks', {})
