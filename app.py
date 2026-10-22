@@ -208,6 +208,7 @@ if st.sidebar.button("🔄 Refresh Data", use_container_width=True):
 
 page = st.sidebar.radio("Navigate", [
     "🏠 Dashboard",
+    "💪 Health & Advice",
     "📊 Mutual Funds",
     "🔍 Analyze (BUY/SELL?)",
     "⚔️ Compare Stocks",
@@ -1457,6 +1458,178 @@ elif page == "➕ Manage Portfolio":
             st.info(f"Total: **{len(stocks)} stocks** in portfolio")
         else:
             st.info("Portfolio is empty.")
+
+
+
+# ============================================================
+# PAGE: HEALTH & ADVICE
+# ============================================================
+elif page == "💪 Health & Advice":
+    st.markdown("#### 💪 Portfolio Health & Advice")
+    st.caption(f"Analysis as of {datetime.now().strftime('%d %b %Y, %I:%M %p')}")
+    
+    portfolio = load_portfolio()
+    stocks = portfolio.get('stocks', {})
+    mf = portfolio.get('mutual_funds', {})
+    
+    with st.spinner("Analyzing your portfolio..."):
+        all_data = fetch_all_portfolio_data(json.dumps(list(stocks.keys())))
+        
+        holdings = []
+        total_invested = 0
+        total_current = 0
+        sectors = {}
+        gold_value = 0
+        silver_value = 0
+        etf_value = 0
+        
+        for symbol, pos in stocks.items():
+            data = all_data.get(symbol)
+            if data and data['cmp']:
+                cmp = data['cmp']
+                invested = pos['avg_cost'] * pos['shares']
+                current = cmp * pos['shares']
+                pnl = current - invested
+                pnl_pct = (pnl / invested * 100) if invested else 0
+                total_invested += invested
+                total_current += current
+                
+                name_lower = pos['name'].lower()
+                if 'gold' in name_lower:
+                    gold_value += current
+                elif 'silv' in name_lower:
+                    silver_value += current
+                elif 'etf' in name_lower or 'nifty' in name_lower or 'fang' in name_lower or 'top 50' in name_lower or 'defence' in name_lower or 's&p' in name_lower:
+                    etf_value += current
+                
+                sector = data.get('sector', 'Unknown')
+                sectors[sector] = sectors.get(sector, 0) + current
+                
+                holdings.append({
+                    'name': pos['name'], 'current': current, 'invested': invested,
+                    'pnl': pnl, 'pnl_pct': pnl_pct, 'sector': sector
+                })
+        
+        mf_invested = sum(m['invested'] for m in mf.values())
+        mf_current = sum(m.get('current', m['invested']) for m in mf.values())
+        grand_invested = total_invested + mf_invested
+        grand_current = total_current + mf_current
+        grand_pnl = grand_current - grand_invested
+        grand_pnl_pct = (grand_pnl / grand_invested * 100) if grand_invested else 0
+    
+    # Health Score
+    num_holdings = len(holdings) + len(mf)
+    diversification = min(100, num_holdings * 5)
+    max_pct = max((h['current']/grand_current*100) for h in holdings) if holdings and grand_current else 0
+    concentration = max(0, 100 - max_pct * 3)
+    num_sectors = len([s for s in sectors if s != 'Unknown'])
+    sector_score = min(100, num_sectors * 18)
+    equity_pct = ((total_current - gold_value - silver_value - etf_value + mf_current) / grand_current * 100) if grand_current else 0
+    health = int(diversification*0.2 + concentration*0.3 + sector_score*0.2 + min(100, len(mf)*20)*0.3)
+    
+    # Top metrics
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Total Invested", f"₹{grand_invested:,.0f}")
+    c2.metric("Current Value", f"₹{grand_current:,.0f}")
+    c3.metric("Total P&L", f"₹{grand_pnl:,.0f}", f"{grand_pnl_pct:+.1f}%")
+    c4.metric("Health Score", f"{health}/100")
+    
+    # Gauge + Allocation
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number", value=health,
+            title={'text': "Portfolio Health"},
+            gauge={'axis': {'range': [0, 100]},
+                   'bar': {'color': '#16a34a' if health >= 70 else ('#f59e0b' if health >= 50 else '#dc2626')},
+                   'steps': [{'range': [0, 40], 'color': '#fee2e2'},
+                             {'range': [40, 70], 'color': '#fef3c7'},
+                             {'range': [70, 100], 'color': '#dcfce7'}]}))
+        fig.update_layout(height=250, margin=dict(l=20, r=20, t=50, b=10), paper_bgcolor='rgba(0,0,0,0)')
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col2:
+        alloc = pd.DataFrame([
+            {'Type': 'Indian Stocks', 'Value': total_current - gold_value - silver_value - etf_value},
+            {'Type': 'Mutual Funds', 'Value': mf_current},
+            {'Type': 'Gold', 'Value': gold_value},
+            {'Type': 'Silver', 'Value': silver_value},
+            {'Type': 'ETFs (US/Theme)', 'Value': etf_value},
+        ])
+        alloc = alloc[alloc['Value'] > 0]
+        fig = px.pie(alloc, values='Value', names='Type', hole=0.45,
+                     color_discrete_sequence=['#2563eb', '#16a34a', '#fbbf24', '#9ca3af', '#a855f7'])
+        fig.update_layout(height=250, margin=dict(l=10, r=10, t=30, b=10),
+                          paper_bgcolor='rgba(0,0,0,0)', title_text="Allocation", title_font_size=13)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    # Winners vs Losers chart
+    st.markdown("##### 📊 Winners & Losers")
+    df_h = pd.DataFrame(holdings).sort_values('pnl')
+    colors = ['#dc2626' if x < 0 else '#16a34a' for x in df_h['pnl']]
+    fig = go.Figure(go.Bar(x=df_h['pnl'], y=df_h['name'], orientation='h', marker_color=colors,
+                           text=[f"{p:+.0f}" for p in df_h['pnl']], textposition='outside'))
+    fig.update_layout(height=400, margin=dict(l=10, r=40, t=10, b=10),
+                      paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis_title="P&L (Rs)")
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Advice section
+    st.markdown("##### 💡 Recommendations")
+    
+    # Auto-generate keep/stop/exit
+    keep, stop, exit_list = [], [], []
+    for h in holdings:
+        nl = h['name'].lower()
+        if 'reliance power' in nl:
+            exit_list.append(f"🔴 **{h['name']}** ({h['pnl_pct']:.0f}%) — loss-making, exit on bounce")
+        elif h['pnl_pct'] < -15:
+            stop.append(f"🟠 **{h['name']}** ({h['pnl_pct']:.0f}%) — stop buying, don't average down")
+        elif h['current'] < 2500:
+            stop.append(f"🟡 **{h['name']}** (₹{h['current']:.0f}) — too small, consolidate or exit")
+        elif h['pnl_pct'] > 0 or 'hdfc bank' in nl or 'bank of baroda' in nl:
+            keep.append(f"🟢 **{h['name']}** — quality, keep/add")
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("**✅ KEEP / ADD**")
+        for k in keep[:8]:
+            st.markdown(k)
+    with col2:
+        st.markdown("**🛑 STOP BUYING**")
+        for s in stop[:8]:
+            st.markdown(s)
+    with col3:
+        st.markdown("**🗑️ EXIT**")
+        for e in exit_list[:8]:
+            st.markdown(e)
+    
+    # Fixed advice
+    st.markdown("---")
+    st.markdown("##### 📋 Action Plan")
+    st.info("""
+**During this market correction (Nifty -5.5%, Sensex -4.75%):**
+
+✅ **HOLD** everything except Reliance Power — markets have bottomed and are recovering
+✅ **BUY the dip** — HDFC Bank (47% upside), Parag Parikh MF, HDFC Mid Cap MF
+✅ **KEEP SIPs running** — buying cheap units now = bigger gains later
+🛑 **STOP** adding: Reliance Power, IRFC, new ETFs, PSU/power stocks (you're overweight)
+🗑️ **EXIT** Reliance Power on any bounce — dead money, dragging portfolio
+""")
+    
+    st.warning("""
+**⚠️ Portfolio Issues Detected:**
+- Too many holdings (17 stocks + 6 ETFs) — over-diversified
+- PSU-heavy: 5 government stocks (BOB, IRFC, IOCL, Coal India, BPCL)
+- Several tiny positions (<₹2,500) that don't impact returns
+- **Fix:** Fewer, bigger, quality positions beat many scattered small bets
+""")
+    
+    st.success("""
+**💪 To Make It Stronger:**
+- Concentrate in HDFC Bank + 4-5 top MFs + gold hedge
+- US ETFs (FANG+, S&P 500) are your green spots — good diversification, keep them
+- Target allocation: 50% MF, 35% quality stocks, 10% gold, 5% US ETF
+""")
 
 
 
