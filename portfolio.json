@@ -2,8 +2,8 @@
   "stocks": {
     "BANKBARODA.NS": {
       "name": "Bank of Baroda",
-      "shares": 183,
-      "avg_cost": 242.24
+      "shares": 185,
+      "avg_cost": 242.17
     },
     "BPCL.NS": {
       "name": "BPCL",
@@ -12,8 +12,8 @@
     },
     "HDFCBANK.NS": {
       "name": "HDFC Bank",
-      "shares": 58,
-      "avg_cost": 731.27
+      "shares": 61,
+      "avg_cost": 729.59
     },
     "SUZLON.NS": {
       "name": "Suzlon Energy",
